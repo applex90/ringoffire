@@ -42,12 +42,15 @@
     0% {
         transform: scale(1);
     }
+
     40% {
         transform: scale(1.6);
     }
+
     60% {
         transform: scale(1.6);
     }
+
     100% {
         transform: scale(1) translateX(160px) translateY(-200px) rotate(-10deg);
     }
@@ -60,13 +63,65 @@
 
 .btn-add {
     position: absolute;
-    right: 32px;
-    bottom: 32px;
+    right: 24px;
+    bottom: 34px;
 }
 
 .pin-bottom {
     position: absolute;
-    bottom: 32px;
+    bottom: 24px;
     left: 120px;
     right: 120px;
+}
+
+@media(max-width: 1024px) {
+
+    .btn-add {
+        position: absolute;
+        right: 24px;
+        top: 24px;
+    }
+
+    .pin-bottom {
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+@media(max-width: 720px) {
+
+    .card-stack {
+        position: relative;
+        margin-left: 24px;
+        margin-bottom: 46px;
+    }
+
+    .played-card {
+        right: 25px;
+        transform: scale(1) translateX(16px) translateY(-250px) rotate(-10deg);
+    }
+    
+    .pick-card {
+        animation: pick-card-animation 1s ease-in-out;
+        transform: scale(1) translateX(16px) translateY(-250px) rotate(-10deg);
+    }
+    
+    @keyframes pick-card-animation {
+        0% {
+            transform: scale(1);
+        }
+    
+        40% {
+            transform: scale(1.4);
+        }
+    
+        60% {
+            transform: scale(1.4);
+        }
+    
+        100% {
+            transform: scale(1) translateX(16px) translateY(-250px) rotate(-10deg);
+        }
+    }
 }
