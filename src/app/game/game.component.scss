@@ -16,6 +16,7 @@
     img {
         position: absolute;
         width: 120px;
+        user-select: none;
     }
 }
 
@@ -73,6 +74,16 @@
     left: 120px;
     right: 120px;
 }
+
+.hint {
+    animation: blinker 1.5s linear;
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
 
 @media(max-width: 1024px) {
 

@@ -11,6 +11,7 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string = '';
+  showHint: boolean = false;
   game: Game;
 
   constructor(public dialog: MatDialog) { }
@@ -30,13 +31,17 @@ export class GameComponent implements OnInit {
       this.pickCardAnimation = true;
       console.log('New card: ' + this.currentCard);
       console.log('Game is', this.game);
-
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       setTimeout(() => {
         this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
       }, 1000);
+    } else if (this.game.players.length == 0){
+      this.showHint = true;
+      setTimeout(() => {
+        this.showHint = false;
+      }, 1500);
     }
   }
 
@@ -47,6 +52,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe(name => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.showHint = false;
       }
     });
   }
