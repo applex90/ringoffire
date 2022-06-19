@@ -15,6 +15,7 @@ export class GameComponent implements OnInit {
   currentCard: string = '';
   showHint: boolean = false;
   game: Game;
+  gameId: string;
 
   constructor(private route: ActivatedRoute, private firestore: AngularFirestore, public dialog: MatDialog) { }
 
@@ -22,22 +23,22 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.route.params.subscribe((params) => {
       console.log('ID is:', params['id']);
+      this.gameId = params['id'];
 
-      this
-      .firestore
-      .collection('games')
-      .doc(params['id'])
-      .valueChanges()
-      .subscribe((game:any) => {
-        console.log('Game update', game);
-        this.game.currentPlayer = game.currentPlayer;
-        this.game.playedCards = game.playedCards;
-        this.game.players = game.players;
-        this.game.stack = game.stack;
+      this.firestore
+        .collection('games')
+        .doc(this.gameId)
+        .valueChanges()
+        .subscribe((game: any) => {
+          console.log('Game update', game);
+          this.game.currentPlayer = game.currentPlayer;
+          this.game.playedCards = game.playedCards;
+          this.game.players = game.players;
+          this.game.stack = game.stack;
 
-      });
+        });
     })
-  
+
   }
 
   newGame() {
@@ -50,13 +51,15 @@ export class GameComponent implements OnInit {
       this.pickCardAnimation = true;
       console.log('New card: ' + this.currentCard);
       console.log('Game is', this.game);
+      this.saveGame();
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       setTimeout(() => {
         this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
+        this.saveGame();
       }, 1000);
-    } else if (this.game.players.length == 0){
+    } else if (this.game.players.length == 0) {
       this.showHint = true;
       setTimeout(() => {
         this.showHint = false;
@@ -67,13 +70,21 @@ export class GameComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
-
     dialogRef.afterClosed().subscribe(name => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame();
         this.showHint = false;
       }
     });
+  }
+
+  saveGame() {
+    this
+      .firestore
+      .collection('games')
+      .doc(this.gameId)
+      .update(this.game.toJson());
   }
 
 }
