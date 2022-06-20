@@ -10,7 +10,7 @@
     img {
         height: 100vh;
         max-width: 100%;
-        object-fit: contain;
+        object-fit: cover;
     }
 }
 
@@ -25,6 +25,10 @@
     img {
         width: 40vw;
         height: auto;
+
+        @media (max-width: 720px) {
+            width: 300px;
+        }
 
         &:hover {
             filter: brightness(1.25);
